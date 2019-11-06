@@ -8,13 +8,14 @@ import (
 
 // ShouldBeClosedBefore проверяет что контекст закрылся
 // до истечения периода времени
+// Поддерживает интерфейс Context и context.Context
 func ShouldBeClosedBefore(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail
 	}
-	ctx, ok := actual.(context.Context)
-	if !ok {
-		return shouldUseContext
+	ctx, fail := getContext(actual)
+	if fail != success {
+		return fail
 	}
 	duration, ok := expected[0].(time.Duration)
 	if !ok {
@@ -31,6 +32,7 @@ func ShouldBeClosedBefore(actual interface{}, expected ...interface{}) string {
 
 // ShouldNotBeClosedBefore проверяет что контекст не успел закрыться
 // до истечения времени
+// Поддерживает интерфейс Context и context.Context
 func ShouldNotBeClosedBefore(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail

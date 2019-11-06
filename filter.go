@@ -1,6 +1,9 @@
 package assertions
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
 const (
 	success                = ""
@@ -28,4 +31,20 @@ func atMost(max int, expected []interface{}) string {
 		return fmt.Sprintf(needFewerValues, max, len(expected))
 	}
 	return success
+}
+
+// Context это интерфейс для получения контекста из произвольных объектов
+type Context interface {
+	// Context возвращает стандартный контекст
+	Context() context.Context
+}
+
+func getContext(v interface{}) (context.Context, string) {
+	if ctx, ok := v.(Context); ok {
+		return ctx.Context(), success
+	}
+	if ctx, ok := v.(context.Context); ok {
+		return ctx, success
+	}
+	return nil, shouldUseContext
 }
