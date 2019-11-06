@@ -47,7 +47,7 @@ func TestShouldBeClosedBefore(t *testing.T) {
 			So(
 				ShouldBeClosedBefore(ctx, time.Second),
 				ShouldEqual,
-				fmt.Sprintf(shouldClosedBefore, time.Second),
+				fmt.Sprintf(shouldClosedBefore, "context.Background.WithCancel", time.Second),
 			)
 		})
 		Convey("Контекст не заполнен", func() {
@@ -81,7 +81,7 @@ func TestShouldBeClosedBefore(t *testing.T) {
 				c.So(
 					ShouldBeClosedBefore(ctx, time.Second),
 					ShouldEqual,
-					fmt.Sprintf(shouldClosedBefore, time.Second),
+					fmt.Sprintf(shouldClosedBefore, "context.Background.WithCancel", time.Second),
 				)
 				ch2 <- struct{}{}
 			}()
@@ -108,7 +108,7 @@ func TestShouldNotBeClosedBefore(t *testing.T) {
 			So(
 				ShouldNotBeClosedBefore(ctx, time.Second),
 				ShouldEqual,
-				fmt.Sprintf(shouldNotClosedBefore, time.Second),
+				fmt.Sprintf(shouldNotClosedBefore, "context.Background.WithCancel", time.Second),
 			)
 		})
 		Convey("Контекст открыт", func() {
@@ -157,7 +157,7 @@ func TestShouldNotBeClosedBefore(t *testing.T) {
 				c.So(
 					ShouldNotBeClosedBefore(ctx, 3*time.Second),
 					ShouldEqual,
-					fmt.Sprintf(shouldNotClosedBefore, 3*time.Second),
+					fmt.Sprintf(shouldNotClosedBefore, "context.Background.WithCancel", 3*time.Second),
 				)
 				ch3 <- struct{}{}
 			}()

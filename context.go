@@ -23,7 +23,7 @@ func ShouldBeClosedBefore(actual interface{}, expected ...interface{}) string {
 	}
 	select {
 	case <-time.After(duration):
-		return fmt.Sprintf(shouldClosedBefore, duration)
+		return fmt.Sprintf(shouldClosedBefore, ctx, duration)
 	case <-ctx.Done():
 		return ""
 	}
@@ -49,7 +49,7 @@ func ShouldNotBeClosedBefore(actual interface{}, expected ...interface{}) string
 	case <-time.After(duration):
 		return ""
 	case <-ctx.Done():
-		return fmt.Sprintf(shouldNotClosedBefore, duration)
+		return fmt.Sprintf(shouldNotClosedBefore, ctx, duration)
 	}
 	return ""
 }
