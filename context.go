@@ -1,7 +1,6 @@
 package assertions
 
 import (
-	"context"
 	"fmt"
 	"time"
 )
@@ -13,7 +12,7 @@ func ShouldBeClosedBefore(actual interface{}, expected ...interface{}) string {
 	if fail := need(1, expected); fail != success {
 		return fail
 	}
-	ctx, fail := getContext(actual)
+	ctx, name, fail := getContext(actual)
 	if fail != success {
 		return fail
 	}
@@ -23,7 +22,7 @@ func ShouldBeClosedBefore(actual interface{}, expected ...interface{}) string {
 	}
 	select {
 	case <-time.After(duration):
-		return fmt.Sprintf(shouldClosedBefore, ctx, duration)
+		return fmt.Sprintf(shouldClosedBefore, name, duration)
 	case <-ctx.Done():
 		return ""
 	}
@@ -37,9 +36,9 @@ func ShouldNotBeClosedBefore(actual interface{}, expected ...interface{}) string
 	if fail := need(1, expected); fail != success {
 		return fail
 	}
-	ctx, ok := actual.(context.Context)
-	if !ok {
-		return shouldUseContext
+	ctx, name, fail := getContext(actual)
+	if fail != success {
+		return fail
 	}
 	duration, ok := expected[0].(time.Duration)
 	if !ok {
@@ -49,7 +48,7 @@ func ShouldNotBeClosedBefore(actual interface{}, expected ...interface{}) string
 	case <-time.After(duration):
 		return ""
 	case <-ctx.Done():
-		return fmt.Sprintf(shouldNotClosedBefore, ctx, duration)
+		return fmt.Sprintf(shouldNotClosedBefore, name, duration)
 	}
 	return ""
 }

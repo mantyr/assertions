@@ -39,12 +39,12 @@ type Context interface {
 	Context() context.Context
 }
 
-func getContext(v interface{}) (context.Context, string) {
+func getContext(v interface{}) (context.Context, string, string) {
 	if ctx, ok := v.(Context); ok {
-		return ctx.Context(), success
+		return ctx.Context(), fmt.Sprintf("%s", ctx), success
 	}
 	if ctx, ok := v.(context.Context); ok {
-		return ctx, success
+		return ctx, fmt.Sprintf("%s", ctx), success
 	}
-	return nil, shouldUseContext
+	return nil, "", shouldUseContext
 }
