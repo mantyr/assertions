@@ -50,6 +50,26 @@ func TestShouldBeClosedBefore(t *testing.T) {
 				fmt.Sprintf(shouldClosedBefore, time.Second),
 			)
 		})
+		Convey("Контекст не заполнен", func() {
+			var context context.Context
+			So(
+				ShouldBeClosedBefore(context, time.Second),
+				ShouldEqual,
+				shouldUseContext,
+			)
+			So(
+				ShouldBeClosedBefore(nil, time.Second),
+				ShouldEqual,
+				shouldUseContext,
+			)
+		})
+		Convey("Не корректно заполненный аргумент", func() {
+			So(
+				ShouldBeClosedBefore(ctx, 123),
+				ShouldEqual,
+				shouldUseDuration,
+			)
+		})
 		Convey("Контекст закрыт в указанный период", func(c C) {
 			ch1, ch2, ch3 := make(chan struct{}), make(chan struct{}), make(chan struct{})
 			go func() {
@@ -96,6 +116,26 @@ func TestShouldNotBeClosedBefore(t *testing.T) {
 				ShouldNotBeClosedBefore(ctx, time.Second),
 				ShouldEqual,
 				"",
+			)
+		})
+		Convey("Контекст не заполнен", func() {
+			var context context.Context
+			So(
+				ShouldNotBeClosedBefore(context, time.Second),
+				ShouldEqual,
+				shouldUseContext,
+			)
+			So(
+				ShouldNotBeClosedBefore(nil, time.Second),
+				ShouldEqual,
+				shouldUseContext,
+			)
+		})
+		Convey("Не корректно заполненный аргумент", func() {
+			So(
+				ShouldNotBeClosedBefore(ctx, 123),
+				ShouldEqual,
+				shouldUseDuration,
 			)
 		})
 		Convey("Контекст закрыт в указанный период", func(c C) {
