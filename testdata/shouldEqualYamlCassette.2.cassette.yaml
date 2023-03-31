@@ -1,0 +1,5 @@
+name: ShouldEqualYamlCassette
+value: ShouldEqualYamlCassette_other
+values:
+    - ShouldEqualYamlCassette1
+    - ShouldEqualYamlCassette2_other

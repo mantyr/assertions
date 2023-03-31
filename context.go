@@ -26,7 +26,6 @@ func ShouldBeClosedBefore(actual interface{}, expected ...interface{}) string {
 	case <-ctx.Done():
 		return ""
 	}
-	return ""
 }
 
 // ShouldNotBeClosedBefore проверяет что контекст не успел закрыться
@@ -50,5 +49,4 @@ func ShouldNotBeClosedBefore(actual interface{}, expected ...interface{}) string
 	case <-ctx.Done():
 		return fmt.Sprintf(shouldNotClosedBefore, name, duration)
 	}
-	return ""
 }
